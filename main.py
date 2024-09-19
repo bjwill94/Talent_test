@@ -9,7 +9,7 @@ import pandas as pd
 st.title("Contestant Marks Entry and Results")
 
 # File upload
-uploaded_file = st.file_uploader("Upload Excel file", type=["xlsx"])
+uploaded_file = st.file_uploader("Upload Excel file with full program list", type=["xlsx"])
 
 if uploaded_file is not None:
     # Read the Excel file into a DataFrame, explicitly setting 'chest no' as string
