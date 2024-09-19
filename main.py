@@ -41,7 +41,9 @@ if uploaded_file is not None:
     final_df['mark3'] = 0.0
 
     # Make the mark columns editable, displaying only the desired columns
-    edited_df = st.experimental_data_editor(final_df[['chest no', 'name', 'mark1', 'mark2', 'mark3', 'church']])
+    # edited_df = st.experimental_data_editor(final_df[['chest no', 'name', 'mark1', 'mark2', 'mark3', 'church']])
+    edited_df = st.data_editor(final_df[['chest no', 'name', 'mark1', 'mark2', 'mark3', 'church']])
+
 
     # Submit button
     if st.button("Submit Marks"):
