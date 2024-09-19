@@ -1,6 +1,9 @@
+# THIS IS AN APPLICATION WHERE THE FULL LIST OF THE PROGRAMS ARE GIVEN IN A SINGLE FILE AND
+# FROM THE FILE, THE CLASSES, AND ITEMS ARE DISPLAYED,AND ON SELECTING A PARTICULAR ITEM, THE PARTICIPANTS
+# MARKSHEET IS VISIBLE, WHICH ON UPDATING, WE WILL GET AN UPDATED FILE IN WHICH THE FIRST, SECOND ARE NOTED AND CSV CAN BE DOWNLAODED
+
 import streamlit as st
 import pandas as pd
-import io
 
 # Streamlit app
 st.title("Contestant Marks Entry and Results")
@@ -52,7 +55,7 @@ if uploaded_file is not None:
         edited_df['mark3'] = edited_df['mark3'].round(2)
 
         # Convert 'chest no' to integer
-        edited_df['chest no'] = pd.to_numeric(edited_df['chest no'], errors='coerce').astype('Int64')  # Handle potential non-numeric values
+        edited_df['chest no'] = pd.to_numeric(edited_df['chest no'], errors='coerce').astype('Int64')
 
         # Sort by total marks in descending order
         edited_df = edited_df.sort_values(by='total', ascending=False)
@@ -71,20 +74,17 @@ if uploaded_file is not None:
 
         # Display the final DataFrame
         st.subheader("Results:")
+
         # Format the columns to display only two decimal places
-        edited_df[['mark1', 'mark2', 'mark3', 'total']] = edited_df[['mark1', 'mark2', 'mark3', 'total']].applymap(
-            '{:.2f}'.format)
+        edited_df[['mark1', 'mark2', 'mark3', 'total']] = edited_df[['mark1', 'mark2', 'mark3', 'total']].applymap('{:.2f}'.format)
 
         st.table(edited_df)
 
-        # Download button for the updated results
-        with io.BytesIO() as buffer:
-            edited_df.to_excel(buffer, index=False)
-            buffer.seek(0)
-
-            st.download_button(
-                label=f"Download {selected_class}-{selected_item}-winner.xlsx",
-                data=buffer.read(),
-                file_name=f"{selected_class}-{selected_item}-winner.xlsx",
-                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            )
+        # Download button for the updated results (CSV format)
+        csv = edited_df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label=f"Download {selected_class}-{selected_item}-winner.csv",
+            data=csv,
+            file_name=f"{selected_class}-{selected_item}-winner.csv",
+            mime='text/csv'
+        )
